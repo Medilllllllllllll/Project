@@ -1,0 +1,23 @@
+<?php
+require 'image.compare.class.php';
+
+$class = new compareImages;
+
+$folderPath = 'tammy_previews/';
+$targetImage = '../uploaded_files/'.$_GET['filename'];
+
+// Получаем список файлов в папке "images"
+$imageFiles = glob($folderPath . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+
+foreach ($imageFiles as $imageFile) {
+    // Сравниваем каждое изображение из папки с целевым изображением
+    $similarity = $class->compare($targetImage, $imageFile);
+    // Выводим результат сравнения
+	if ($similarity < 11){
+		$similarity = (10 - $similarity) * 10;
+    	echo '<br>Similarity between '.$targetImage.' and '.$imageFile.': '.$similarity.'%<br><br>';
+		echo '<img src="http://img-similarity.ifbest.org/content_checker/'.$targetImage.'" width="300px" height="auto"><img src="http://img-similarity.ifbest.org/content_checker/'.$imageFile.'" width="300px" height="auto"><br>';
+	}
+}
+
+?>
